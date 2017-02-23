@@ -8,6 +8,7 @@ from nltk.stem import SnowballStemmer
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.model_selection import train_test_split
 from sklearn.naive_bayes import MultinomialNB
+from sklearn.externals import joblib
 
 
 def load_data():
@@ -56,12 +57,20 @@ def build_clf(X, y):
     # return the mean accuracy on the given test data and labels
     score = clf.score(X_test, y_test)
     print('Accuracy: %s' % (score))
+    return clf
+
+
+# dump classifier
+def export_trained_clf(clf):
+    # compression level for data = 3
+    joblib.dump(clf, 'delta_model.pkl', compress=3)
 
 
 def main():
     df = load_data()
     y = df.label.values
     X = build_feature_matrices(df)
-    build_clf(X, y)
+    clf = build_clf(X, y)
+    export_trained_clf(clf)
 
 main()
