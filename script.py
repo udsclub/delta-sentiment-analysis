@@ -1,3 +1,35 @@
+#FINAL SCRIPT
+import pandas as pd
+import string
+import re
+from sklearn.model_selection import train_test_split
+from nltk.corpus import stopwords
+from nltk.stem import SnowballStemmer
+
+#loading and splitting data
+df = pd.read_table('reviews.csv', sep='|')
+train, test = train_test_split(df, test_size = 0.2, random_state = 111)
+  
+# data pre-processing
+def tokenize_text(text):
+    #to lowercase, tokenization
+    word_list = re.findall('[A-Za-z]+',text.lower())
+    #remowing stopwords
+    word_list = [word for word in word_list if word not in stopwords.words('english')]
+    # stemming
+    stemmer = SnowballStemmer("english")
+    word_list = [stemmer.stem(word) for word in word_list]
+    return word_list
+
+reviews_train = list(train.text)
+for i in range(len(reviews_train)):
+    reviews_train[i] = tokenize_text(reviews_train[i])
+
+
+
+#########################################################################################
+#IDEAS
+
 import string
 import pandas as pd
 
