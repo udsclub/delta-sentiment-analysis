@@ -1,16 +1,18 @@
-#FINAL SCRIPT
+#FINAL SCRIPT TRAIN SET
 import pandas as pd
 import string
 import re
 from sklearn.model_selection import train_test_split
 from nltk.corpus import stopwords
 from nltk.stem import SnowballStemmer
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.ensemble import RandomForestClassifier
 
 #loading and splitting data
 df = pd.read_table('reviews.csv', sep='|')
-train, test = train_test_split(df, test_size = 0.2, random_state = 111)
+train, test = train_test_split(df, test_size = 0.6, random_state = 111)
   
-# data pre-processing
+#data pre-processing
 def tokenize_text(text):
     #to lowercase, tokenization
     word_list = re.findall('[A-Za-z]+',text.lower())
@@ -21,12 +23,64 @@ def tokenize_text(text):
     word_list = [stemmer.stem(word) for word in word_list]
     return word_list
 
-reviews_train = list(train.text)
-for i in range(len(reviews_train)):
-    reviews_train[i] = tokenize_text(reviews_train[i])
+#feature extraction and vectorization
+def build_feature_matrices(df):
+    # build a vocabulary that only consider the top 300 features
+    vectorizer = TfidfVectorizer(tokenizer=tokenize_text, max_features=300)
+    # learn vocabulary and return term-document matrix
+    X = vectorizer.fit_transform(df['text'].values).toarray()
+    features = vectorizer.get_feature_names()
+    return X, features
+
+X, features = build_feature_matrices(train)
+
+#write features to the file
+thefile = open('features.txt', 'w')
+for item in features:
+    thefile.write("%s\n" % item)
+thefile.close()
+
+
+# model building
 
 
 
+
+
+#########################################################################################
+
+#FINAL SCRIPT TEST SET
+import pandas as pd
+import string
+import re
+from nltk.corpus import stopwords
+from nltk.stem import SnowballStemmer
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.ensemble import RandomForestClassifier
+
+#importing file
+df = pd.read_table('reviews.csv', sep='|')
+
+#import feature vector
+features_voc = open('features.txt', 'r').read().strip().split('\n')
+
+#tokenize
+def tokenize_text(text):
+    #to lowercase, tokenization
+    word_list = re.findall('[A-Za-z]+',text.lower())
+    #remowing stopwords
+    word_list = [word for word in word_list if word not in stopwords.words('english')]
+    #stemming
+    stemmer = SnowballStemmer("english")
+    word_list = [stemmer.stem(word) for word in word_list]
+    return word_list
+
+#vectorize
+def build_feature_matrices2(df):
+    #COuntVecorize using words from loaded vocabulary
+    vectorizer = TfidfVectorizer(tokenizer=tokenize_text, vocabulary = features_voc)
+    X = vectorizer.fit_transform(df['text'].values).toarray()
+    return X
 #########################################################################################
 #IDEAS
 
