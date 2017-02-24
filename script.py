@@ -7,6 +7,7 @@ from nltk.corpus import stopwords
 from nltk.stem import SnowballStemmer
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.ensemble import RandomForestClassifier
+from nltk.tokenize import word_tokenize
 
 #loading and splitting data
 df = pd.read_table('reviews.csv', sep='|')
