@@ -67,7 +67,7 @@ features_voc = open('features.txt', 'r').read().strip().split('\n')
 #tokenize
 def tokenize_text(text):
     #to lowercase, tokenization
-    word_list = re.findall('[A-Za-z]+',text.lower())
+    word_list = word_tokenize(text)
     #remowing stopwords
     word_list = [word for word in word_list if word not in stopwords.words('english')]
     #stemming
