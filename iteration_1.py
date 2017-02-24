@@ -1,3 +1,5 @@
+####MODEL BUILDING PART####
+
 import pandas as pd
 import string
 import re
@@ -60,5 +62,60 @@ def main()
     #build model
     clf = build_clf(X_transform_train, train['label'])
     export_trained_clf(clf)  
+    
+main()
+
+
+####MODEL TESTING PART####
+import pandas as pd
+import string
+import re
+from sklearn.model_selection import train_test_split
+from nltk.corpus import stopwords
+from nltk.stem import SnowballStemmer
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.ensemble import RandomForestClassifier
+from nltk.tokenize import word_tokenize
+from sklearn.externals import joblib
+
+# data pre-processing
+def tokenize_text(text):
+    # to lowercase, tokenization
+    word_list = re.findall('[A-Za-z]+',text.lower())
+    # remowing stopwords
+    word_list = [word for word in word_list if word not in stopwords.words('english')]
+    # stemming
+    word_list = [SnowballStemmer("english").stem(word) for word in word_list]
+    return word_list
+
+#vectorization
+def build_feature_matrices_test(X):
+    # load features
+    features_voc = open('features.txt', 'r').read().strip().split('\n')
+    # vectorize using loaded features
+    vectorizer = TfidfVectorizer(tokenizer=tokenize_text, vocabulary = features_voc)
+    X_transform = vectorizer.fit_transform(X).toarray()
+    return X_transform
+    
+
+#predictions
+def predict_clf(X, Y):
+    clf2 = joblib.load('delta_model.pkl')
+    predictions = clf2.predict(X)
+    print("Accuracy: ",clf2.score(X, Y))
+
+
+def main():
+    #importing file
+    
+    ################### тут можно вбырать, какой на каком файле тестить
+    ################### если ничего не выбрано - тестить на тренировочном сете в строке 59
+    #df = pd.read_table('reviews.csv', header=0, error_bad_lines=False, delimiter='|')
+    ###################
+    
+    #vectorizing data
+    X_transform_test = build_feature_matrices_test(test['text'])
+    #predictions
+    predict_clf(X_transform_test,test['label'])
     
 main()
