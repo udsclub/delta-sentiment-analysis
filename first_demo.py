@@ -8,7 +8,7 @@ from nltk.tokenize import word_tokenize
 from sklearn.externals import joblib
 
 # loading and splitting data
-df = pd.read_table('reviews.csv', header=0, error_bad_lines=False, delimiter='|')
+df = pd.read_table('reviews_rt_all.csv', header=0, error_bad_lines=False, delimiter='|')
 train, test = train_test_split(df, test_size=0.6, random_state=111)
 
 
