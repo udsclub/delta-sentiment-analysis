@@ -2,7 +2,6 @@
 
 import pandas as pd
 import string
-import re
 from sklearn.model_selection import train_test_split
 from nltk.corpus import stopwords
 from nltk.stem import SnowballStemmer
@@ -14,13 +13,18 @@ from sklearn.externals import joblib
 
 # data pre-processing
 def tokenize_text(text):
-    # to lowercase, tokenization
-    word_list = re.findall('[A-Za-z]+',text.lower())
-    # remowing stopwords
-    word_list = [word for word in word_list if word not in stopwords.words('english')]
+    # delete punctuation symbols
+    punc_symb = string.punctuation
+    text_no_punc = ''.join(s for s in text if s not in punc_symb)
+    # tokenize text
+    token_text = word_tokenize(text_no_punc)
+    # delete stop-words
+    stop_list = set(stopwords.words('english'))
+    clean_text = [w for w in token_text if w.lower() not in stop_list]
     # stemming
-    word_list = [SnowballStemmer("english").stem(word) for word in word_list]
-    return word_list
+    stemmer = SnowballStemmer("english")
+    result_text = [stemmer.stem(word) for word in clean_text]
+    return result_text
 
 # feature extraction and vectorization
 def build_feature_matrices(X):
@@ -69,7 +73,6 @@ main()
 ####MODEL TESTING PART####
 import pandas as pd
 import string
-import re
 from sklearn.model_selection import train_test_split
 from nltk.corpus import stopwords
 from nltk.stem import SnowballStemmer
@@ -80,13 +83,18 @@ from sklearn.externals import joblib
 
 # data pre-processing
 def tokenize_text(text):
-    # to lowercase, tokenization
-    word_list = re.findall('[A-Za-z]+',text.lower())
-    # remowing stopwords
-    word_list = [word for word in word_list if word not in stopwords.words('english')]
+    # delete punctuation symbols
+    punc_symb = string.punctuation
+    text_no_punc = ''.join(s for s in text if s not in punc_symb)
+    # tokenize text
+    token_text = word_tokenize(text_no_punc)
+    # delete stop-words
+    stop_list = set(stopwords.words('english'))
+    clean_text = [w for w in token_text if w.lower() not in stop_list]
     # stemming
-    word_list = [SnowballStemmer("english").stem(word) for word in word_list]
-    return word_list
+    stemmer = SnowballStemmer("english")
+    result_text = [stemmer.stem(word) for word in clean_text]
+    return result_text
 
 #vectorization
 def build_feature_matrices_test(X):
@@ -108,9 +116,10 @@ def predict_clf(X, Y):
 def main():
     #importing file
     
-    ################### тут можно вбырать, какой на каком файле тестить
-    ################### если ничего не выбрано - тестит на тренировочном сете, созданном в строке 59
+    ################### сюда нужно вписать скрипт для загрузки файла, который будем предиктить
+    ################### если неуказано ничего - грузится тренировочный сет, созданный в строке 63
     #df = pd.read_table('reviews.csv', header=0, error_bad_lines=False, delimiter='|')
+    #test = df
     ###################
     
     #vectorizing data
