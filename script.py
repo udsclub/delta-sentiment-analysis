@@ -15,7 +15,7 @@ train, test = train_test_split(df, test_size = 0.6, random_state = 111)
 #data pre-processing
 def tokenize_text(text):
     #to lowercase, tokenization
-    word_list = re.findall('[A-Za-z]+',text.lower())
+    word_list = word_tokenize(text)
     #remowing stopwords
     word_list = [word for word in word_list if word not in stopwords.words('english')]
     # stemming
