@@ -55,8 +55,9 @@ def main()
     # load and split data
     df = pd.read_table('reviews.csv', header=0, error_bad_lines=False, delimiter='|')
     train, test = train_test_split(df, test_size = 0.3, random_state = 111)
-    
+    # vectorize
     X_transform_train = build_feature_matrices(train['text'])
+    #build model
     clf = build_clf(X_transform_train, train['label'])
     export_trained_clf(clf)  
     
