@@ -1,0 +1,48 @@
+1. without stemming, lemming, deleting stop-words
+   no. of features = 20 000 
+   no. of estimators = 400 
+   acc. on train set = 0.835464900752
+   acc. on test set = 0.811512149092
+
+   no. of features = 25 000 
+   no. of estimators = 400 
+   acc. on train set = 0.835683955111
+   acc. on test set = 0.809894516901
+
+   no. of features = 20 000 
+   no. of estimators = 500 
+   acc. on train set = 0.844724160011
+   acc. on test set = 0.816331344994
+
+   no. of features = 20 000 
+   no. of estimators = 300 
+   acc. on train set = 0.822734472416
+   acc. on test set = 0.803255484784
+
+   n_grams optimal values = unigrams and bigrams
+
+2. deleting stop-words 
+   acc. on train set = 0.831427825193
+   acc. on test set = 0.806558150507
+
+3. deleting stop-words and punctuation
+   acc. on train set = 0.82089333189
+   acc. on test set = 0.8018443821
+	
+4. replace digits and specific words with special symbol
+   acc. on train set = 0.830416796556
+   acc. on test set = 0.804468708927
+
+5.  no. of features = 20 000 
+    no. of estimators = 400 
+    ngram_range=(1,2)
+    + nltk.tokenization, nltk.stopwords, nltk. stemming
+   acc. on train set = 0.831427825193
+   acc. on test set = 0.806558150507
+  
+
+
+
+
+ 
+	
